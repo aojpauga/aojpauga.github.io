@@ -248,6 +248,14 @@
                                     Add A Dog!
                                   </v-btn>
                                 </v-col>
+                                <div v-if="errors.length">
+                                  Errors Adding Dog: 
+                                  <ul>
+                                    <li v-for="error in errors">
+                                      {{error}}
+                                    </li>
+                                  </ul>
+                                </div>
                               
                               </v-form>
                             </v-card>

@@ -36,7 +36,11 @@ var app = new Vue({
     breed: "",
     age: "",
     id: "",
+    nameError: "",
+    breedError: "",
+    ageError:"",
     dogs: [],
+    errors :[],
     items: [
       {
         src: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg"
@@ -53,13 +57,36 @@ var app = new Vue({
     ]
   },
   methods: {
+    checkFields: function(){
+      this.errors= []
+      if(this.name == ""){
+        this.errors.push("Please enter a name")
+      } 
+      if(this.breed == ""){
+        this.errors.push("Please enter a breed")
+      }
+      if(this.age == ""){
+        this.errors.push("Please enter an age")
+      }
+      if(this.errors.length > 0){
+        return false
+      }else{
+        return true
+      }
+    },
     createdButtonClicked: function() {
-      console.log("Clicked");
-      createDogOnServer(this.name, this.breed, this.age).then(response => {
-        if (response.status == 201) {
-          this.loadDogs();
-        }
-      });
+      if(this.checkFields()){
+        createDogOnServer(this.name, this.breed, this.age).then(response => {
+          this.checkFields()
+          if (response.status == 201) {
+            this.name = ""
+            this.breed = ""
+            this.age = ""
+            this.loadDogs();
+          }
+        });
+      }
+      
     },
     loadDogs: function() {
       getDogsFromSever().then(response => {
