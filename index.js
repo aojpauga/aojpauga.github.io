@@ -19,7 +19,7 @@ var Dog = mongoose.model("Dog", {
 });
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
@@ -63,16 +63,17 @@ app.delete("/dogs/:dogId", function(req, res) {
 });
 
 app.put("/dogs/:dogId", function(req, res) {
+  console.log("Put on server called");
+  console.log(req.body);
   let dogId = req.params.dogId;
-  let newName = req.params.name;
-  Dog.findOneAndUpdate({ _id: dogId }, { name: newName })
+  Dog.findByIdAndUpdate({ _id: dogId })
     .then(function(dog) {
-      if (dog) {
-        res.sendStatus(200);
-        res.json(dog);
-      } else {
-        res.sendStatus(404);
-      }
+      dog.name = req.body.name;
+      dog.age = req.body.age;
+      dog.breed = req.body.breed;
+      dog.save().then(function() {
+        res.sendStatus(202);
+      });
     })
     .catch(function() {
       res.sendStatus(400);

@@ -2,10 +2,11 @@ var getDogsFromSever = function() {
   return fetch("http://localhost:3000/dogs");
 };
 
-var createDogOnServer = function(name, breed, age) {
+var createDogOnServer = function(name, breed, age, url) {
   var data = `name=${encodeURIComponent(name)}`;
   data += `&breed=${encodeURIComponent(breed)}`;
   data += `&age=${encodeURIComponent(age)}`;
+  data += `&url=${encodeURIComponent(url)}`;
   return fetch("http://localhost:3000/dogs", {
     body: data,
     method: "POST",
@@ -24,6 +25,21 @@ var deleteDogOnServer = function(id) {
   });
 };
 
+var putDogOnServer = function(id, name, breed, age, url) {
+  console.log("put on server called");
+  var data = `name=${encodeURIComponent(name)}`;
+  data += `&breed=${encodeURIComponent(breed)}`;
+  data += `&age=${encodeURIComponent(age)}`;
+  data += `&url=${encodeURIComponent(url)}`;
+  return fetch("http://localhost:3000/dogs/" + id, {
+    body: data,
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    }
+  });
+};
+
 var app = new Vue({
   el: "#app",
   vuetify: new Vuetify(),
@@ -36,57 +52,50 @@ var app = new Vue({
     breed: "",
     age: "",
     id: "",
+    url: "",
     nameError: "",
     breedError: "",
-    ageError:"",
+    ageError: "",
     dogs: [],
-    errors :[],
-    items: [
-      {
-        src: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg"
-      },
-      {
-        src: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg"
-      },
-      {
-        src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg"
-      },
-      {
-        src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg"
-      }
-    ]
+    errors: [],
+    editDialog: false
   },
   methods: {
-    checkFields: function(){
-      this.errors= []
-      if(this.name == ""){
-        this.errors.push("Please enter a name")
-      } 
-      if(this.breed == ""){
-        this.errors.push("Please enter a breed")
+    checkFields: function() {
+      this.errors = [];
+      if (this.name == "") {
+        this.errors.push("Please enter a name");
       }
-      if(this.age == ""){
-        this.errors.push("Please enter an age")
+      if (this.breed == "") {
+        this.errors.push("Please enter a breed");
       }
-      if(this.errors.length > 0){
-        return false
-      }else{
-        return true
+      if (this.age == "") {
+        this.errors.push("Please enter an age");
+      }
+      if (this.url == "") {
+        this.errors.push("Please enter a image url");
+      }
+      if (this.errors.length > 0) {
+        return false;
+      } else {
+        return true;
       }
     },
     createdButtonClicked: function() {
-      if(this.checkFields()){
-        createDogOnServer(this.name, this.breed, this.age).then(response => {
-          this.checkFields()
-          if (response.status == 201) {
-            this.name = ""
-            this.breed = ""
-            this.age = ""
-            this.loadDogs();
+      if (this.checkFields()) {
+        createDogOnServer(this.name, this.breed, this.age, this.url).then(
+          response => {
+            this.checkFields();
+            if (response.status == 201) {
+              this.name = "";
+              this.breed = "";
+              this.age = "";
+              this.url = "";
+              this.loadDogs();
+            }
           }
-        });
+        );
       }
-      
     },
     loadDogs: function() {
       getDogsFromSever().then(response => {
@@ -102,6 +111,20 @@ var app = new Vue({
           this.loadDogs();
         }
       });
+    },
+    putDog: function() {
+      console.log("put called");
+      console.log("put here");
+      console.log(this.id, this.name, this.breed, this.age, this.url)
+      putDogOnServer(this.id, this.name, this.breed, this.age, this.url).then(
+        response => {
+          if (response.status == 202) {
+            this.loadDogs();
+          } else {
+            console.log("failed");
+          }
+        }
+      );
     }
   },
   created: function() {

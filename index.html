@@ -100,52 +100,6 @@
                   </v-container>
                 </div>
 
-                <!-- <div v-show="dogPage">
-                  <v-container>
-                    <v-card class="overflow-hidden">
-                        
-                        <v-sheet
-                          id="scrolling-techniques-2"
-                        >
-                          <v-container style="height: 1000px;" >
-                            <v-row>
-                                <v-col cols="12">
-                                  <v-row
-                                    class="grey lighten-5"
-                                    style="height: 100px;"
-                                  >
-                                    
-                                  </v-row>
-                                </v-col>
-                                <v-col cols="12">
-                                  <v-row justify="center">
-                                    <v-col
-                                      cols="6"
-                                      md="2"
-                                    >
-                                    
-                                    </v-col>
-                                  </v-row>
-                                </v-col>
-                              </v-row> 
-                              <v-img src="https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2017/11/12234558/Chinook-On-White-03.jpg"
-                              aspect-ratio="1"
-                              class="grey lighten-2"
-                              max-width="500"
-                              max-height="300">
-                                
-                              </v-img> 
-                              <v-card
-                              
-                              >
-                               {{dogs[0]._id}}
-                              </v-card>
-                           
-                        </v-container>
-                        </v-sheet>
-                      </v-card>
-                  </v-container>
-                </div> -->
 
                 <div v-show="adoptPage">
                   <v-container>
@@ -178,14 +132,15 @@
                           <v-card class="mx-auto" max-width="400" tile v-for="dog in dogs" class="ma-2" click>
                             <v-list-item class="ma-2" >
                               
-                              <v-list-item-content>
+                              <v-list-item-content class="text-center">
                                 <v-list-item-title>{{dog.name}}</v-list-item-title>
                                 <v-list-item-subtitle>{{dog.breed}}</v-list-item-subtitle>
                                 <v-list-item-subtitle>{{dog.age}}</v-list-item-subtitle>
-                                <v-list-item-subtitle>{{dog._id}}</v-list-item-subtitle>
-                                <v-btn color="primary" v-on:click="id = dog._id, name = dog.name">
+                                <v-btn color="primary" v-on:click="id = dog._id, name = dog.name" justify-center>
                                   Select Dog
                                 </v-btn>
+                                
+
                               </v-list-item-content>
                             </v-list-item>
                           </v-card>
@@ -242,6 +197,10 @@
                                 <v-col cols="12" sm="6" md="3" class="mx-auto">
                                   <v-text-field v-model="age" label="Dog Age" required></v-text-field>
                                 </v-col>
+
+                                <v-col cols="12" sm="6" md="3" class="mx-auto">
+                                  <v-text-field v-model="url" label="Dog Image URL" required></v-text-field>
+                                </v-col>
                               
                                 <v-col cols="12" sm="6" md="3" class="mx-auto">
                                   <v-btn color="success" class="mr-4" v-on:click.native="createdButtonClicked">
@@ -269,7 +228,46 @@
                                 <v-list-item-content >
                                   <v-list-item-title>{{dog.name}}</v-list-item-title>
                                   <v-list-item-subtitle>{{dog.breed}}</v-list-item-subtitle>
-                                  <v-list-item-subtitle>{{dog.name}}</v-list-item-subtitle>
+                                  <v-list-item-subtitle>{{dog.age}}</v-list-item-subtitle>
+                                  <template>
+                                    <v-row justify="center">
+                                      <v-dialog v-model="editDialog" persistent max-width="600px" :retain-focus="false">
+                                        <template v-slot:activator="{ on }">
+                                          <v-btn color="primary" dark v-on="on" @click="editDialog = true, id=dog._id">Edit Dog Profile</v-btn>
+                                        </template>
+                                        <v-card>
+                                          <v-card-title>
+                                            <span class="headline">Dog Profile</span>
+                                          </v-card-title>
+                                          <v-card-text>
+                                            <v-container>
+                                              <v-row>
+                                                <v-col cols="12">
+                                                  <v-text-field label="Name*" required v-model="dog.name"></v-text-field>
+                                                  <div>{{dog.name}}</div>
+                                                </v-col>
+                                                <v-col cols="12">
+                                                  <v-text-field label="Breed*" required v-model="dog.breed"></v-text-field>
+                                                </v-col>
+                                                <v-col cols="12" >
+                                                  <v-text-field label="Age*" required v-model="dog.age"></v-text-field>
+                                                </v-col>
+                                                <v-col cols="12">
+                                                  <v-text-field label="Image URL*" required v-model="dog.url"></v-text-field>
+                                                </v-col>
+                                              </v-row>
+                                            </v-container>
+                                            <small>*indicates required field</small>
+                                          </v-card-text>
+                                          <v-card-actions>
+                                            <v-spacer></v-spacer>
+                                            <v-btn color="blue darken-1" text @click="editDialog = false" >Close</v-btn>
+                                            <v-btn color="blue darken-1" text @click="editDialog = false, name = dog.name, breed = dog.breed, age = dog.age, url = dog.url" v-on:click.native="putDog">Save</v-btn>
+                                          </v-card-actions>
+                                        </v-card>
+                                      </v-dialog>
+                                    </v-row>
+                                  </template>
                                 </v-list-item-content>
                             </v-list-item>
                               </v-card>
