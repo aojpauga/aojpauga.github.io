@@ -97,10 +97,7 @@ var app = new Vue({
         createDogOnServer(this.name, this.breed, this.age, this.url).then(
           response => {
             if (response.status == 201) {
-              this.name = "";
-              this.breed = "";
-              this.age = "";
-              this.url = "";
+              
               this.loadDogs();
             }
           }
@@ -129,10 +126,7 @@ var app = new Vue({
         putDogOnServer(this.id, this.name, this.breed, this.age, this.url).then(
           response => {
             if (response.status == 202) {
-              this.name = "";
-                this.breed = "";
-                this.age = "";
-                this.url = "";
+              
               this.loadDogs();
             } else {
               console.log("failed");
@@ -141,8 +135,9 @@ var app = new Vue({
         )
     },
     reset: function(){
+      console.log("reset clicked")
       this.$refs.form.reset()     
-      this.$refs.form.resetValidation()
+      //this.$refs.form.resetValidation()
     }
   },
   created: function() {

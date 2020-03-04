@@ -123,55 +123,53 @@
                           </v-row>
                           <v-col cols="12" sm="6" md="3" class="mx-auto">
 
-<template>
-  <div class="text-center">
-    <v-dialog
-      v-model="dialog"
-      width="500"
-    >
-      <template v-slot:activator="{ on }">
-        <v-btn
-          color="red lighten-2"
-          dark
-          v-on="on"
-          v-on:click.native="deleteDog"
-        >
-          Click Me
-        </v-btn>
-      </template>
-
-      <v-card>
-        <v-card-title
-          class="headline grey lighten-2"
-          primary-title
-        >
-          Privacy Policy
-        </v-card-title>
-
-        <v-card-text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </v-card-text>
-
-        <v-divider></v-divider>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="primary"
-            text
-            @click="dialog = false"
-          >
-            I accept
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </div>
-</template>
-                              
-                                  <v-btn color="success" class="mr-4" v-on:click.native="deleteDog">
+                          <template>
+                            <div class="text-center">
+                              <v-dialog
+                                v-model="dialog"
+                                width="500"
+                              >
+                                <template v-slot:activator="{ on }">
+                                  <v-btn
+                                    color="success"
+                                    dark
+                                    v-on="on"
+                                    v-on:click.native="deleteDog"
+                                  >
                                     Adopt A Dog!
                                   </v-btn>
+                                </template>
+
+                                <v-card>
+                                  <v-card-title
+                                    class="headline grey lighten-2"
+                                    primary-title
+                                  >
+                                  Congratulations!
+                                  </v-card-title>
+
+                                  <v-card-text >
+                                   Have fun with your new dog! Be sure to love and care for it!
+                                  </v-card-text>
+
+                                  <v-divider></v-divider>
+
+                                  <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn
+                                      color="primary"
+                                      text
+                                      @click="dialog = false"
+                                    >
+                                      Close
+                                    </v-btn>
+                                  </v-card-actions>
+                                </v-card>
+                              </v-dialog>
+                            </div>
+                          </template>
+                              
+                                  
                                 
                            
                           </v-col>
@@ -232,8 +230,11 @@
                               </v-row>
                               
                             <v-card class="mx-auto">
-                              <div class="title" class="mx-auto">Add A New Dog</div>
-                              <v-form class="mx-auto" ref="form">
+                              <v-col class="mx-auto">
+                                <div class="title" class="mx-auto">Add A New Dog</div>
+
+                              </v-col>
+                              <v-form class="mx-auto" ref="form" >
                                 <v-col cols="12" sm="6" md="3" class="mx-auto">
                                   <v-text-field v-model="name" label="Dog Name" required :rules="editRules"></v-text-field>
                                 </v-col>
@@ -250,11 +251,14 @@
                                   <v-text-field v-model="url" label="Dog Image URL" required :rules="editRules"></v-text-field>
                                 </v-col>
                               
-                                <v-col cols="12" sm="6" md="3" class="mx-auto">
-                                  <v-btn color="success" class="mr-4" v-on:click.native="createdButtonClicked">
+                                <v-row align="center" class="mx-auto" justify="space-around">
+                                  <v-btn color="success" class="mr-4" v-on:click.native="createdButtonClicked" >
                                     Add A Dog!
                                   </v-btn>
-                                </v-col>
+                                  <v-btn color="error" class="mr-4" @click="reset">
+                                    Reset
+                                  </v-btn>
+                                </v-row>
                                 
                               
                               </v-form>
@@ -297,6 +301,8 @@
                                                   <v-text-field label="Image URL*" required v-model="dog.url" :rules="editRules"></v-text-field>
                                                 </v-col>
                                               </v-row>
+
+                                            
                                             </v-form>
                                             <small>*indicates required field</small>
                                           </v-card-text>

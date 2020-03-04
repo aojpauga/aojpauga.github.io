@@ -12,10 +12,22 @@ mongoose.connect(
 );
 
 var Dog = mongoose.model("Dog", {
-  name: String,
-  breed: String,
-  age: String,
-  url: String
+  name: {
+    type:String, 
+    requred: [true, "Name required"]
+  },
+  breed: {
+    type:String, 
+    requred: [true, "Breed required"]
+  },
+  age: {
+    type:String, 
+    requred: [true, "Age required"]
+  },
+  url: {
+    type:String, 
+    requred: [true, "URL required"]
+  }
 });
 
 const app = express();
@@ -81,4 +93,4 @@ app.put("/dogs/:dogId", function(req, res) {
     });
 });
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(port, () => console.log(`listening on port ${port}!`));
