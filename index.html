@@ -122,9 +122,58 @@
                             </v-col>
                           </v-row>
                           <v-col cols="12" sm="6" md="3" class="mx-auto">
-                            <v-btn color="success" class="mr-4" v-on:click.native="deleteDog">
-                              Adopt A Dog!
-                            </v-btn>
+
+<template>
+  <div class="text-center">
+    <v-dialog
+      v-model="dialog"
+      width="500"
+    >
+      <template v-slot:activator="{ on }">
+        <v-btn
+          color="red lighten-2"
+          dark
+          v-on="on"
+          v-on:click.native="deleteDog"
+        >
+          Click Me
+        </v-btn>
+      </template>
+
+      <v-card>
+        <v-card-title
+          class="headline grey lighten-2"
+          primary-title
+        >
+          Privacy Policy
+        </v-card-title>
+
+        <v-card-text>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            text
+            @click="dialog = false"
+          >
+            I accept
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </div>
+</template>
+                              
+                                  <v-btn color="success" class="mr-4" v-on:click.native="deleteDog">
+                                    Adopt A Dog!
+                                  </v-btn>
+                                
+                           
                           </v-col>
                           <v-col class="mx-auto">
                           <div class="title">You selected: {{name}}</div>
@@ -136,11 +185,10 @@
                                 <v-list-item-title>{{dog.name}}</v-list-item-title>
                                 <v-list-item-subtitle>{{dog.breed}}</v-list-item-subtitle>
                                 <v-list-item-subtitle>{{dog.age}}</v-list-item-subtitle>
+                                
                                 <v-btn color="primary" v-on:click="id = dog._id, name = dog.name" justify-center>
                                   Select Dog
                                 </v-btn>
-                                
-
                               </v-list-item-content>
                             </v-list-item>
                           </v-card>
@@ -185,21 +233,21 @@
                               
                             <v-card class="mx-auto">
                               <div class="title" class="mx-auto">Add A New Dog</div>
-                              <v-form ref="form" class="mx-auto">
+                              <v-form class="mx-auto" ref="form">
                                 <v-col cols="12" sm="6" md="3" class="mx-auto">
-                                  <v-text-field v-model="name" label="Dog Name" required></v-text-field>
+                                  <v-text-field v-model="name" label="Dog Name" required :rules="editRules"></v-text-field>
                                 </v-col>
                               
                                 <v-col cols="12" sm="6" md="3" class="mx-auto">
-                                  <v-text-field v-model="breed" label="Dog Breed" required></v-text-field>
+                                  <v-text-field v-model="breed" label="Dog Breed" required :rules="editRules"></v-text-field>
                                 </v-col>
                               
                                 <v-col cols="12" sm="6" md="3" class="mx-auto">
-                                  <v-text-field v-model="age" label="Dog Age" required></v-text-field>
+                                  <v-text-field v-model="age" label="Dog Age" required :rules="[numberRule]"></v-text-field>
                                 </v-col>
 
                                 <v-col cols="12" sm="6" md="3" class="mx-auto">
-                                  <v-text-field v-model="url" label="Dog Image URL" required></v-text-field>
+                                  <v-text-field v-model="url" label="Dog Image URL" required :rules="editRules"></v-text-field>
                                 </v-col>
                               
                                 <v-col cols="12" sm="6" md="3" class="mx-auto">
@@ -207,14 +255,7 @@
                                     Add A Dog!
                                   </v-btn>
                                 </v-col>
-                                <div v-if="errors.length">
-                                  Errors Adding Dog: 
-                                  <ul>
-                                    <li v-for="error in errors">
-                                      {{error}}
-                                    </li>
-                                  </ul>
-                                </div>
+                                
                               
                               </v-form>
                             </v-card>
@@ -231,7 +272,7 @@
                                   <v-list-item-subtitle>{{dog.age}}</v-list-item-subtitle>
                                   <template>
                                     <v-row justify="center">
-                                      <v-dialog v-model="editDialog" persistent max-width="600px" :retain-focus="false">
+                                      <v-dialog v-model="editDialog" persistent max-width="600px" :retain-focus="false" :rules="editRules">
                                         <template v-slot:activator="{ on }">
                                           <v-btn color="primary" dark v-on="on" @click="editDialog = true, id=dog._id">Edit Dog Profile</v-btn>
                                         </template>
@@ -240,29 +281,29 @@
                                             <span class="headline">Dog Profile</span>
                                           </v-card-title>
                                           <v-card-text>
-                                            <v-container>
+                                            <v-form ref="form2" v-model="valid">
                                               <v-row>
                                                 <v-col cols="12">
-                                                  <v-text-field label="Name*" required v-model="dog.name"></v-text-field>
+                                                  <v-text-field label="Name*" required v-model="dog.name" :rules="editRules"></v-text-field>
                                                   <div>{{dog.name}}</div>
                                                 </v-col>
                                                 <v-col cols="12">
-                                                  <v-text-field label="Breed*" required v-model="dog.breed"></v-text-field>
+                                                  <v-text-field label="Breed*" required v-model="dog.breed" :rules="editRules"></v-text-field>
                                                 </v-col>
                                                 <v-col cols="12" >
-                                                  <v-text-field label="Age*" required v-model="dog.age"></v-text-field>
+                                                  <v-text-field label="Age*" required v-model="dog.age" :rules="editRules"></v-text-field>
                                                 </v-col>
                                                 <v-col cols="12">
-                                                  <v-text-field label="Image URL*" required v-model="dog.url"></v-text-field>
+                                                  <v-text-field label="Image URL*" required v-model="dog.url" :rules="editRules"></v-text-field>
                                                 </v-col>
                                               </v-row>
-                                            </v-container>
+                                            </v-form>
                                             <small>*indicates required field</small>
                                           </v-card-text>
                                           <v-card-actions>
                                             <v-spacer></v-spacer>
-                                            <v-btn color="blue darken-1" text @click="editDialog = false" >Close</v-btn>
-                                            <v-btn color="blue darken-1" text @click="editDialog = false, name = dog.name, breed = dog.breed, age = dog.age, url = dog.url" v-on:click.native="putDog">Save</v-btn>
+                                            <v-btn color="blue darken-1" text @click="editDialog = false, reset" >Close</v-btn>
+                                            <v-btn color="blue darken-1" text :disabled="!valid"@click="editDialog = false, reset, name = dog.name, breed = dog.breed, age = dog.age, url = dog.url" v-on:click.native="putDog">Save</v-btn>
                                           </v-card-actions>
                                         </v-card>
                                       </v-dialog>

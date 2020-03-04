@@ -58,7 +58,18 @@ var app = new Vue({
     ageError: "",
     dogs: [],
     errors: [],
-    editDialog: false
+    editDialog: false,
+    deleteDialog: false,
+    dialog:false,
+    editRules:[
+      v => v.length >= 1 || "Minimum length is one character"
+    ],
+    numberRule: v  => {
+      if (!isNaN(parseFloat(v)) && v >= 0 && v <= 99) return true;
+      return 'Number has to be between 0 and 99';
+    },
+    
+    valid: true
   },
   methods: {
     checkFields: function() {
@@ -82,10 +93,9 @@ var app = new Vue({
       }
     },
     createdButtonClicked: function() {
-      if (this.checkFields()) {
+      if (this.$refs.form.validate()) {
         createDogOnServer(this.name, this.breed, this.age, this.url).then(
           response => {
-            this.checkFields();
             if (response.status == 201) {
               this.name = "";
               this.breed = "";
@@ -116,15 +126,23 @@ var app = new Vue({
       console.log("put called");
       console.log("put here");
       console.log(this.id, this.name, this.breed, this.age, this.url)
-      putDogOnServer(this.id, this.name, this.breed, this.age, this.url).then(
-        response => {
-          if (response.status == 202) {
-            this.loadDogs();
-          } else {
-            console.log("failed");
+        putDogOnServer(this.id, this.name, this.breed, this.age, this.url).then(
+          response => {
+            if (response.status == 202) {
+              this.name = "";
+                this.breed = "";
+                this.age = "";
+                this.url = "";
+              this.loadDogs();
+            } else {
+              console.log("failed");
+            }
           }
-        }
-      );
+        )
+    },
+    reset: function(){
+      this.$refs.form.reset()     
+      this.$refs.form.resetValidation()
     }
   },
   created: function() {

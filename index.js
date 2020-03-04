@@ -71,6 +71,7 @@ app.put("/dogs/:dogId", function(req, res) {
       dog.name = req.body.name;
       dog.age = req.body.age;
       dog.breed = req.body.breed;
+      dog.url = req.body.url
       dog.save().then(function() {
         res.sendStatus(202);
       });
