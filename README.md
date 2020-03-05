@@ -15,17 +15,9 @@ url
 
 ## Methods and Endpoints
 | GET  | POST | DELETE | PUT |
-| ------------- | ------------- |
+| ----- | ----- | ----  | ---- |
 | /dogs  | /dogs  |  /dogs/id |  /dogs/id |
 
-GET:
-/dogs
-POST:
-/dogs
-DELETE:
-/dogs/id
-PUT:
-/dogs/id
 
 ## Tutorials
 I used vuetify and followed documentation on https://vuetifyjs.com/
