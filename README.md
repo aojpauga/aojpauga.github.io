@@ -14,10 +14,14 @@ age
 url
 
 ## Methods and Endpoints
-GET /dogs
-POST /dogs
-DELETE /dogs/id
-PUT /dogs/id
+GET:
+/dogs
+POST:
+/dogs
+DELETE:
+/dogs/id
+PUT:
+/dogs/id
 
 ## Tutorials
 I used vuetify and followed documentation on https://vuetifyjs.com/
