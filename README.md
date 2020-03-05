@@ -15,3 +15,6 @@ GET /dogs
 POST /dogs
 DELETE /dogs/id
 PUT /dogs/id
+
+## Resources
+I used vuetify and followed documentation on https://vuetifyjs.com/
