@@ -4,6 +4,9 @@ A web application that creates dog instances.  Allows users to update dog inform
 # Website
 https://aojpauga.github.io/
 
+# Resource
+Dogs
+
 ## Attributes
 name
 breed
@@ -16,5 +19,5 @@ POST /dogs
 DELETE /dogs/id
 PUT /dogs/id
 
-## Resources
+## Tutorials
 I used vuetify and followed documentation on https://vuetifyjs.com/
