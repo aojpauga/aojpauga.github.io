@@ -14,6 +14,10 @@ age
 url
 
 ## Methods and Endpoints
+| GET  | POST | DELETE | PUT |
+| ------------- | ------------- |
+| /dogs  | /dogs  |  /dogs/id |  /dogs/id |
+
 GET:
 /dogs
 POST:
