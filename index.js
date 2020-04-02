@@ -73,7 +73,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors({ credentials: true, origin: "aojpauga.github.io" }));
+app.use(cors({ credentials: true, origin: "https://aojpauga.github.io" }));
 app.use(
   session({
     secret: "jytfgvjytf98795445676",
