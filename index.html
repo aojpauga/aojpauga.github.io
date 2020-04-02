@@ -24,17 +24,17 @@
 
             <v-spacer></v-spacer>
             <v-btn class="ma-2"
-              v-on:click.native="homePage = true, dogPage = false, addPage = false, adoptPage = false">Home
+              v-on:click.native="homePage = true, dogPage = false, addPage = false, adoptPage = false" >Home
             </v-btn>
             <v-btn class="ma-2"
-              v-on:click.native="homePage = false, dogPage = false, addPage = false, adoptPage = true">Adopt A
+              v-on:click.native="homePage = false, dogPage = false, addPage = false, adoptPage = true" v-if="userLoggin">Adopt A
               Dog</v-btn>
             <v-btn class="ma-2"
-              v-on:click.native="homePage = false, dogPage = false, addPage = true, adoptPage = false">Add A Dog
+              v-on:click.native="homePage = false, dogPage = false, addPage = true, adoptPage = false" v-if="userLoggin">Add A Dog
             </v-btn>
             <v-btn class="ma-2"
-              v-on:click.native="homePage = false, dogPage = false, addPage = false, adoptPage = false, loginPage = true, appBar = false">
-              Sign Out</v-btn>
+              v-on:click.native="homePage = false, addPage = false, adoptPage = false, loginPage = true, appBar = false">
+              Login</v-btn>
 
 
           </v-app-bar>

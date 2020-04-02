@@ -86,10 +86,11 @@ var app = new Vue({
   el: "#app",
   vuetify: new Vuetify(),
   data: {
-    loginPage: true,
+    userLoggin: false,
+    loginPage: false,
     signUpPage: false,
-    appBar: false,
-    homePage: false,
+    appBar: true,
+    homePage: true,
     dogPage: false,
     addPage: false,
     adoptPage: false,
@@ -155,6 +156,8 @@ var app = new Vue({
         response => {
           if (response.status == 201) {
             console.log("User created");
+          } else {
+            alert("User exists");
           }
         }
       );
@@ -163,10 +166,12 @@ var app = new Vue({
       console.log(this.email, this.plainPassword);
       createSessionOnServer(this.email, this.plainPassword).then(response => {
         if (response.status == 201) {
+          this.userLoggin = true;
           this.loginPage = false;
           this.homePage = true;
           this.appBar = true;
         } else {
+          alert("Incorrect loggin. Do you need to sign up?");
           console.log("Broke");
         }
       });
@@ -209,18 +214,20 @@ var app = new Vue({
   },
   created: function() {
     console.log("VUE LOADED");
+    this.loadDogs();
     getSessionOnServer().then(res => {
       if (res.status != 401) {
         console.log(res.status);
         this.loginPage = false;
         this.homePage = true;
         this.appBar = true;
+        this.userLoggin = true;
         //this.loadDogs();
       } else {
         console.log(res.status);
-        this.loginPage = true;
-        this.appBar = false;
-        this.homePage = false;
+        //this.loginPage = true;
+        //this.appBar = false;
+        //this.homePage = false;
       }
     });
   }
