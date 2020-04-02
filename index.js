@@ -22,7 +22,8 @@ var userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: true
+    required: true,
+    createIndexes: true
   },
   encryptedPassword: {
     type: String,
@@ -72,7 +73,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors({ credentials: true, origin: "null" }));
+app.use(cors({ credentials: true, origin: "null,aojpauga.github.io" }));
 app.use(
   session({
     secret: "jytfgvjytf98795445676",
@@ -137,6 +138,7 @@ app.get("/session", function(req, res) {
 
 app.post("/users", function(req, res) {
   // Store hash in your password DB.
+
   let user = new User({
     name: req.body.name,
     email: req.body.email
@@ -148,7 +150,15 @@ app.post("/users", function(req, res) {
         res.sendStatus(201);
       })
       .catch(function(err) {
-        console.log(err);
+        if (err.errors) {
+          var messages = {};
+          for (let e in err.errors) {
+            messages[e] = err.errors[e].message;
+          }
+          res.status(422).json(messages);
+        } else {
+          res.sendStatus(500);
+        }
       });
   });
 });
