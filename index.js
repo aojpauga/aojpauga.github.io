@@ -71,9 +71,11 @@ var Dog = mongoose.model("Dog", {
 
 const app = express();
 const port = process.env.PORT || 3000;
+var github = "https://aojpauga.github.io";
+var local = "null";
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors({ credentials: true, origin: "https://aojpauga.github.io" }));
+app.use(cors({ credentials: true, origin: github }));
 app.use(
   session({
     secret: "jytfgvjytf98795445676",
