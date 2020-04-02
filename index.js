@@ -136,6 +136,11 @@ app.get("/session", function(req, res) {
   }
 });
 
+app.delete("/session", function(req, res) {
+  req.logout();
+  res.sendStatus(200);
+});
+
 app.post("/users", function(req, res) {
   // Store hash in your password DB.
 
