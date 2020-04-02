@@ -2,7 +2,9 @@ var local = "http://localhost:3000";
 var heroku = "https://warm-forest-47794.herokuapp.com";
 
 var getDogsFromSever = function() {
-  return fetch(local + "/dogs");
+  return fetch(heroku + "/dogs", {
+    credentials: "include"
+  });
 };
 
 var createDogOnServer = function(name, breed, age, url) {
@@ -10,7 +12,7 @@ var createDogOnServer = function(name, breed, age, url) {
   data += `&breed=${encodeURIComponent(breed)}`;
   data += `&age=${encodeURIComponent(age)}`;
   data += `&url=${encodeURIComponent(url)}`;
-  return fetch(local + "/dogs", {
+  return fetch(heroku + "/dogs", {
     body: data,
     method: "POST",
     credentials: "include",
@@ -21,7 +23,17 @@ var createDogOnServer = function(name, breed, age, url) {
 };
 
 var deleteDogOnServer = function(id) {
-  return fetch(local + "/dogs/" + id, {
+  return fetch(heroku + "/dogs/" + id, {
+    method: "DELETE",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    }
+  });
+};
+
+var deleteSessionOnServer = function() {
+  return fetch(heroku + "/session", {
     method: "DELETE",
     credentials: "include",
     headers: {
@@ -36,7 +48,7 @@ var putDogOnServer = function(id, name, breed, age, url) {
   data += `&breed=${encodeURIComponent(breed)}`;
   data += `&age=${encodeURIComponent(age)}`;
   data += `&url=${encodeURIComponent(url)}`;
-  return fetch(local + "/dogs/" + id, {
+  return fetch(heroku + "/dogs/" + id, {
     body: data,
     method: "PUT",
     credentials: "include",
@@ -51,7 +63,7 @@ var createUserOnServer = function(name, email, plainPassword) {
   data += `&email=${encodeURIComponent(email)}`;
   data += `&plainPassword=${encodeURIComponent(plainPassword)}`;
   console.log(data);
-  return fetch("http://localhost:3000/users", {
+  return fetch(heroku + "/users", {
     body: data,
     method: "POST",
     credentials: "include",
@@ -66,7 +78,7 @@ var createSessionOnServer = function(email, plainPassword) {
   var data = `email=${encodeURIComponent(email)}`;
   data += `&plainPassword=${encodeURIComponent(plainPassword)}`;
   console.log(data);
-  return fetch("http://localhost:3000/session", {
+  return fetch(heroku + "/session", {
     body: data,
     method: "POST",
     credentials: "include",
@@ -77,7 +89,7 @@ var createSessionOnServer = function(email, plainPassword) {
 };
 
 var getSessionOnServer = function() {
-  return fetch("http://localhost:3000/session", {
+  return fetch(heroku + "/session", {
     credentials: "include"
   });
 };
@@ -87,6 +99,8 @@ var app = new Vue({
   vuetify: new Vuetify(),
   data: {
     userLoggin: false,
+    loginButton: true,
+    logoutButton: false,
     loginPage: false,
     signUpPage: false,
     appBar: true,
@@ -156,6 +170,7 @@ var app = new Vue({
         response => {
           if (response.status == 201) {
             console.log("User created");
+            alert("User Created!");
           } else {
             alert("User exists");
           }
@@ -170,9 +185,24 @@ var app = new Vue({
           this.loginPage = false;
           this.homePage = true;
           this.appBar = true;
+          this.loginButton = false;
+          this.logoutButton = true;
         } else {
           alert("Incorrect loggin. Do you need to sign up?");
           console.log("Broke");
+        }
+      });
+    },
+    deleteSession: function() {
+      deleteSessionOnServer().then(response => {
+        if (response.status == 200) {
+          alert("You have logged out");
+          this.userLoggin = false;
+          this.logoutButton = false;
+          this.loginButton = true;
+          this.addPage = false;
+          this.adoptPage = false;
+          this.homePage = true;
         }
       });
     },
@@ -222,6 +252,8 @@ var app = new Vue({
         this.homePage = true;
         this.appBar = true;
         this.userLoggin = true;
+        this.loginButton = false;
+        this.logoutButton = true;
         //this.loadDogs();
       } else {
         console.log(res.status);
